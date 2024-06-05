@@ -1,0 +1,15 @@
+# dockaer image with version= focal 
+FROM Ubuntu:focal 
+
+RUN apt-get update 
+RUN apt-get install -y curl
+# node js installation setup 
+RUN apt-get install -y nodejs
+RUN apt-get install git -y 
+
+WORKDIR /home/app
+
+COPY main.sh main.sh
+
+ENTRYPOINT ["/home/app/main.sh"]
+
