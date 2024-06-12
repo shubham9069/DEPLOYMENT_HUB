@@ -1,15 +1,25 @@
-# dockaer image with version= focal 
-FROM Ubuntu:focal 
+FROM ubuntu:focal 
 
-RUN apt-get update 
+RUN apt-get update
 RUN apt-get install -y curl
-# node js installation setup 
+# npm install 
+RUN curl -sL https://deb.nodesource.com/setup_20.x | bash -
+RUN apt-get upgrade -y
 RUN apt-get install -y nodejs
-RUN apt-get install git -y 
 
-WORKDIR /home/app
+RUN apt-get install git -y
 
-COPY main.sh main.sh
+RUN mkdir -p home/app/output
 
-ENTRYPOINT ["/home/app/main.sh"]
+COPY main.sh /home/app/main.sh
+COPY script.js /home/app/script.js
+COPY package*.json /home/app
 
+RUN cd /home/app && npm install
+
+# change this from CRLF to lf
+RUN sed -i 's/\r$//' /home/app/main.sh && chmod +x /home/app/main.sh  
+RUN chmod +x /home/app/script.js
+
+
+ENTRYPOINT [ "/home/app/main.sh" ]
