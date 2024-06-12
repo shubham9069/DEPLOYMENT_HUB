@@ -1,2 +1,14 @@
 
 setup a azure blob storage :- https://learn.microsoft.com/en-us/azure/storage/blobs/storage-quickstart-blobs-nodejs?tabs=managed-identity%2Croles-azure-portal%2Csign-in-visual-studio-code&pivots=blob-storage-quickstart-scratch
+job in contaiuner app :- https://learn.microsoft.com/en-us/azure/container-apps/jobs?tabs=azure-resource-manager#start-a-job-execution-on-demand
+oauth2 access token :- https://learn.microsoft.com/en-us/entra/identity-platform/v2-oauth2-client-creds-grant-flow#get-a-token
+exectution container job API :- https://learn.microsoft.com/en-us/rest/api/containerapps/jobs/start?view=rest-containerapps-2024-03-01&tabs=HTTP
+
+
+
+builder-server contain 4 env : 
+PROJECT_ID == project_slug,
+AZURE_STORAGE_CONNECTION_STRING
+REDIS_SERVICE_URI = GIT_REPOSITORY_URL
+
+these 4 env serve throught the api server to container 

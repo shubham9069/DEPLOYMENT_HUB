@@ -4,13 +4,18 @@ const fs = require("fs");
 const mime = require("mime-types");
 const { BlobServiceClient } = require("@azure/storage-blob");
 require("dotenv").config();
+const Redis = require("ioredis");
 
-
-
+const publisher = new Redis(process.env.REDIS_SERVICE_URI);
 const PROJECT_ID = process.env.PROJECT_ID;
 const BLOB_CONTAINER_NAME = "bucket";
 var blobServiceClient;
 var containerClient;
+
+
+function publishLog(log) {
+  publisher.publish(`logs:${PROJECT_ID}`, JSON.stringify({ log }));
+}
 
 function connect() {
   try {
@@ -50,6 +55,9 @@ async function uploadBlob(filePath,fileName){
     const blockBlobClient = containerClient.getBlockBlobClient(`${PROJECT_ID}/${blobName}`);
 
     // Display blob name and url
+    publishLog(
+`\nUploading to Azure storage as blob\n\tname: ${blobName}:\n\tURL: ${blockBlobClient.url}`
+    );
     console.log(
       `\nUploading to Azure storage as blob\n\tname: ${blobName}:\n\tURL: ${blockBlobClient.url}`
     );
@@ -68,21 +76,25 @@ async function uploadBlob(filePath,fileName){
 
 async function init() {
   console.log("Executing script.js");
+  publishLog("Executing script.js");
   const outDirPath = path.join(__dirname,"output"); // path of project inside container - home/app/output
   console.log(outDirPath)
 
-  const p = exec(` cd ${outDirPath} && npm install && npm run build `); // Terminal CMD
+  const p = exec(` cd ${outDirPath} && npm install --force && npm run build `); // Terminal CMD
 
   p.stdout.on("data", function (data) {
     console.log(data.toString());
+    publishLog(data.toString());
   });
 
   p.stdout.on("error", function (data) {
     console.log("Error", data.toString());
+     publishLog(`ERRPOR:-${data.toString()}`);
   });
 
   p.on("close", async function () {
     console.log("Build Complete");
+     publishLog("Build Complete");
     const distFolderPath = path.join(outDirPath, "build");
     const distFolderPathContents = fs.readdirSync(distFolderPath, {
       recursive: true,
@@ -98,6 +110,7 @@ async function init() {
       await uploadBlob(filePath,file)
     }
     console.log('upload successfully')
+     publishLog("upload successfully");
   });
 }
 connect();
