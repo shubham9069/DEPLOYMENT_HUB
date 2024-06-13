@@ -7,8 +7,38 @@ exectution container job API :- https://learn.microsoft.com/en-us/rest/api/conta
 
 
 builder-server contain 4 env : 
+deployment :{
+    service: container app job 
+    name:builder-server-job
+    Image:deploymentcr.azurecr.io/builder-server:latest
+    env:[AZURE_SUBSCRIPTION_ID,AZURE_TENANT_ID,ACCESS_TOKEN,AZURE_STORAGE_CONNECTION_STRING,REDIS_SERVICE_URI]
+}
+
+these 4 env serve throught the api server to container :=
 PROJECT_ID == project_slug,
 AZURE_STORAGE_CONNECTION_STRING
-REDIS_SERVICE_URI = GIT_REPOSITORY_URL
+REDIS_SERVICE_URI
+GIT_REPOSITORY_URL
 
-these 4 env serve throught the api server to container 
+api server  contain 4 env :
+deployment :{
+    service: container instance 
+    name:api-server-container
+    Image:deploymentcr.azurecr.io/api-server:latest
+    DNS_name:deploymenthub.australiacentral.azurecontainer.io
+    defaultport:80
+    socket.io_port:9002
+    env:[AZURE_SUBSCRIPTION_ID,AZURE_TENANT_ID,ACCESS_TOKEN,AZURE_STORAGE_CONNECTION_STRING,REDIS_SERVICE_URI]
+}
+api server  contain 4 env :
+deployment :{
+    service: container instance 
+    name:reverse-proxy-container
+    Image:deploymentcr.azurecr.io/reverse-proxy-server:latest
+    DNS_name:deploymenthubclient.japanwest.azurecontainer.io
+
+}
+
+
+
+
