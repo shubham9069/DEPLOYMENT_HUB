@@ -9,7 +9,7 @@ Developing a new project similar to Vercel that enables one-click deployment of 
 - AZURE ACR,ACI,ACA,BLOB STORAGE
 
   ## Working Architecture:-
-![Working-flow-architecture](https://github.com/shubham9069/DEPLOYMENT_HUB/assets/101730475/50fafe22-5e4e-4ba0-a446-001aa3ed4b82)
+![Working-flow-architecture](https://github.com/shubham9069/DEPLOYMENT_HUB/assets/101730475/48bac3d1-4fe3-4757-9a65-0a1b87bb2763)
 
 
   ## Deployment Architecture:-
