@@ -1,0 +1,23 @@
+.All-project-container {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.All-project-header {
+  display: flex;
+  align-items: center;
+  grid-gap: 18px;
+  margin-bottom: 2rem;
+}
+
+.list-type > div:hover {
+  cursor: pointer;
+  background-color: rgb(222, 222, 222);
+}
+.project-container {
+  display: grid;
+  gap: 22px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+

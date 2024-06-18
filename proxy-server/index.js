@@ -9,6 +9,7 @@ const BASE_PATH = `https://blobdeployment.blob.core.windows.net/${BLOB_CONTAINER
 
 const proxy = httpProxy.createProxy();
 
+
 app.use((req, res) => {
   const hostname = req.hostname;
   const subdomain = hostname.split(".")[0];
@@ -22,7 +23,10 @@ app.use((req, res) => {
 
 proxy.on("proxyReq", (proxyReq, req, res) => {
   const url = req.url;
+
   if (url === "/") proxyReq.path += "index.html";
+    console.log(proxyReq.path);
 });
+
 
 app.listen(PORT, () => console.log(`Reverse Proxy Running..${PORT}`));

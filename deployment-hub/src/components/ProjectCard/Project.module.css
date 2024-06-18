@@ -1,0 +1,32 @@
+
+.product-card {
+  padding: 18px;
+  transition: all 0.2s ease-in-out;
+  background-color:white
+}
+.product-card:hover {
+  cursor: pointer;
+  border-color: rgb(135, 133, 133);
+}
+.text-content {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+.text-content>a:hover {
+  text-decoration: underline;
+
+}
+.text-content > h4 {
+  font-weight: 600 !important;
+}
+.create-project{
+    font-weight:500 ;
+    font-size: 14px;
+}
+.branch-name p{
+   font-size: 13px;
+
+   
+}

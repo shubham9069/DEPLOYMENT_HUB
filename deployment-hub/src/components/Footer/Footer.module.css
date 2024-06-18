@@ -1,0 +1,8 @@
+.footer-container{
+    background-color: white;
+    border-top: 1px solid rgb(222, 222, 222);
+    padding: 18px 36px;
+    position: fixed;
+    width: 100vw;
+    bottom: 0;
+}

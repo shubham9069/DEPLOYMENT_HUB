@@ -27,9 +27,19 @@ deployment :{
     Image:deploymentcr.azurecr.io/api-server:latest
     DNS_name:deploymenthub.australiacentral.azurecontainer.io
     defaultport:80
+    port:[80, 6379, 9002, 20952]
     socket.io_port:9002
-    env:[AZURE_SUBSCRIPTION_ID,AZURE_TENANT_ID,ACCESS_TOKEN,AZURE_STORAGE_CONNECTION_STRING,REDIS_SERVICE_URI]
+    env:[
+    AZURE_SUBSCRIPTION_ID,
+    AZURE_TENANT_ID,
+    ACCESS_TOKEN,
+    AZURE_STORAGE_CONNECTION_STRING,
+    REDIS_SERVICE_URI,
+    AZURE_CLIENT_ID,
+    AZURE_CLIENT_SECRET
+    ]
 }
+
 api server  contain 4 env :
 deployment :{
     service: container instance 
