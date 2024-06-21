@@ -208,7 +208,7 @@ synchronizeSetLoaderState(true)
                     alt="template"
                     width={300}
                     height={150}
-                    className=" w-full aspect-[4/3] rounded-t-ml"
+                    className=" w-full aspect-[4/3] rounded-t-ml object-contain"
                   />
 
                   <div className="flex gap-3 p-2 ">

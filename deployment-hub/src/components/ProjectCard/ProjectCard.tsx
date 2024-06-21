@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import style from './Project.module.css'
 import Image from "next/image";
 import Link from "next/link";
@@ -18,6 +18,26 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Ellipsis, GitBranchPlus, Github } from "lucide-react";
 const ProjectCard = ({projectDetails}:any) => {
+
+
+  const dateformate= useMemo(()=>{
+     let mS = [
+       "Jan",
+       "Feb",
+       "Mar",
+       "Apr",
+       "May",
+       "June",
+       "July",
+       "Aug",
+       "Sept",
+       "Oct",
+       "Nov",
+       "Dec",
+     ];
+let date = new Date(projectDetails?.createdAt);
+return `${date.getDay()} ${mS[date.getMonth()]}`;
+  },[projectDetails])
   return (
     <div className={`${style["product-card"]} border rounded-md`}>
       <div className={`flex gap-2 ${style["project-card-top"]}`}>
@@ -30,7 +50,11 @@ const ProjectCard = ({projectDetails}:any) => {
         />
         <div className={style["text-content"]}>
           <h4>{projectDetails?.project_slug}</h4>
-          <Link href="" target='_blank' className="span-text">
+          <Link
+            href={projectDetails?.host_url}
+            target="_blank"
+            className="span-text"
+          >
             {projectDetails?.host_url}
           </Link>
         </div>
@@ -50,13 +74,17 @@ const ProjectCard = ({projectDetails}:any) => {
       </div>
       <div className="flex gap-2 highlight-text items-center my-4">
         <Github className="w-4 h-4 fill-black" />
-        <Link href={projectDetails?.github_url} target='_blank' className="">
-          {projectDetails?.github_url.substring(19,projectDetails?.github_url.length-4)}
+        <Link
+          href={`https://github.com/${projectDetails?.repo_url}`}
+          target="_blank"
+          className=""
+        >
+          {projectDetails?.repo_url}
         </Link>
       </div>
 
       <h4 className={`${style["create-project"]} text-zinc-500`}>
-        Created On {new Date(projectDetails?.created_at).toLocaleDateString()}
+        Created On {dateformate}
       </h4>
       <div className={`flex gap-2 items-center ${style["branch-name"]}`}>
         <GitBranchPlus className="icon-style" />

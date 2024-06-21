@@ -33,7 +33,7 @@ const socket = io("http://localhost:9002", {});
 const ConfigureProject = () => {
   const { toast } = useToast();
   const router = useRouter();
-  const { userData }: any = useContext(AppContext);
+  const { userData, setAllProject }: any = useContext(AppContext);
   let project: any = useSearchParams().get("project");
   project = JSON.parse(project);
   const [projectState, setProjectState] = useState<"config" | "deploy" | "live">(
@@ -78,41 +78,58 @@ const ConfigureProject = () => {
     setEnvironmentVariables(copyArr);
   }
   function handleSelect(value){
-    if (value == "React.js"){
-      setProjectDetails({
-        ...projectDetails,
-        ["frame_work"]: value,
-        build_foldername:"build"
-      });
-    }else{
+
+    switch (value) {
+      case "React.js":
+        setProjectDetails({
+          ...projectDetails,
+          ["frame_work"]: value,
+          build_foldername: "build",
+        });
+         setCommand({ ...command, build_cmd: "npm run build" });
+        break;
+      case "Next.js":
         setProjectDetails({
           ...projectDetails,
           ["frame_work"]: value,
           build_foldername: "out",
         });
+         setCommand({ ...command, build_cmd: "npm run build" });
+        break;
+      case "Angular.js":
+        setProjectDetails({
+          ...projectDetails,
+          ["frame_work"]: value,
+          build_foldername: `dist/${project.repo_name}/browser`,
+        });
+        setCommand({ ...command,build_cmd:'ng build'});
+        break;
     }
+ 
   }
 
   async function projectConfig() {
     let payload = {
       user_id: userData?._id,
-      project_slug: projectDetails?.project_slug,
-      git_url: projectDetails?.clone_url,
+      project_slug: projectDetails?.project_slug.trim().replaceAll(" ", "-"),
+      clone_url: projectDetails?.clone_url,
       env: environmentVariables[0].name ? environmentVariables : [],
       branch_name: projectDetails?.default_branch,
       frame_work: projectDetails?.frame_work,
       node_module_cmd: command?.node_module_cmd,
       build_cmd: command?.build_cmd,
       build_foldername: projectDetails?.build_foldername,
+      repo_url: project?.repo_url,
     };
 
     try {
       socket.emit("subscribe", `logs:${projectDetails?.project_slug}`);
      
       const res = await CreateProject(payload);
-      console.log(res)
+
       if (res.data.data.azure_job_id) {
         setProjectState("deploy")
+        setAllProject((prev)=>[...prev,res.data.data])
         toast({
           title: `Creating project`,
           description: `Your project job-id:- ${res.data.data.azure_job_id}`,
@@ -299,8 +316,9 @@ const ConfigureProject = () => {
                 <SelectContent>
                   <SelectGroup>
                     <SelectLabel>FrameWork </SelectLabel>
-                    <SelectItem value="React.js">React.jst</SelectItem>
+                    <SelectItem value="React.js">React.js</SelectItem>
                     <SelectItem value="Next.js">Next.js</SelectItem>
+                    <SelectItem value="Angular.js">Angular.js</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>

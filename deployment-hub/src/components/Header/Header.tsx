@@ -29,7 +29,7 @@ const Header = () => {
       {/* mid  */}
       <div className=" flex-1 max-md:hidden  ">
         <Link
-          href="/ese"
+          href={`/${userData.username }`}
           className="flex sm:flex-row sm:items-center text-sm font-medium leading-none flex items-center gap-4 rounded-xl border px-1 py-2 w-fit flex-col items-start justify-between cursor-pointer "
         >
           <img src="/image/logo.png" alt="logo" className="h-6 w-6"></img>
