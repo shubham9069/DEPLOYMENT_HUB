@@ -76,7 +76,7 @@ async function init() {
   const outDirPath = path.join(__dirname, "output"); // path of project inside container - home/app/output
   console.log(outDirPath);
 
-  const p = exec(` cd ${outDirPath} && npm install --force && npm run build `); // Terminal CMD
+  const p = exec(` cd ${outDirPath} && ${process.env.NODE_MODULE_CMD} && ${process.env.BUILD_CMD} `); // Terminal CMD
 
   p.stdout.on("data", function (data) {
     console.log(data.toString());
@@ -91,7 +91,7 @@ async function init() {
   p.on("close", async function () {
     console.log("Build Complete");
     publishLog("Build Complete");
-    const distFolderPath = path.join(outDirPath, "build");
+    const distFolderPath = path.join(outDirPath, process.env.BUILD_FOLDER_NAME);
     const distFolderPathContents = fs.readdirSync(distFolderPath, {
       recursive: true,
     }); //give all the file and folder into /dist
