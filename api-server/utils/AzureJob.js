@@ -5,7 +5,7 @@ const RESOURCE_GROUPS = "Azure-machine1_group";
 const IMAGE_NAME = "deploymentcr.azurecr.io/builder-server:latest";
 const CONTAINER_NAME = "builder-server-container";
 
-async function containerBuilderServerJob(git_url, project_slug, ACCESS_TOKEN, env = [], node_module_cmd = "npm install --force", build_cmd = "npm run build", build_foldername="build") {
+async function containerBuilderServerJob(clone_url, project_slug, ACCESS_TOKEN, env = [], node_module_cmd = "npm install --force", build_cmd = "npm run build", build_foldername="build") {
   try {
     const res = await axios.post(
       ` https://management.azure.com/subscriptions/${process.env.AZURE_SUBSCRIPTION_ID}/resourceGroups/${RESOURCE_GROUPS}/providers/Microsoft.App/jobs/${CONTAINER_JOB_NAME}/start?api-version=2023-05-01`,
@@ -37,7 +37,7 @@ async function containerBuilderServerJob(git_url, project_slug, ACCESS_TOKEN, en
               },
               {
                 name: "GIT_REPOSITORY_URL",
-                value: git_url,
+                value: clone_url,
               },
               {
                 name: "REDIS_SERVICE_URI",

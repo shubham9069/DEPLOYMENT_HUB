@@ -2,7 +2,7 @@ const express = require("express");
 const httpProxy = require("http-proxy");
 
 const app = express();
-const PORT = 80;
+const PORT = 8000;
 
 const BLOB_CONTAINER_NAME = "bucket";
 const BASE_PATH = `https://blobdeployment.blob.core.windows.net/${BLOB_CONTAINER_NAME}`;

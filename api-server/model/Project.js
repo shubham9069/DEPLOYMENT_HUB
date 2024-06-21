@@ -7,7 +7,11 @@ const schema = new mongoose.Schema({
         type: String,
         unique: true,
     },
-    github_url: {
+    clone_url: {
+        required: true,
+        type: String,
+    },
+    repo_url:{
         required: true,
         type: String,
     },

@@ -5,9 +5,9 @@ const { containerBuilderServerJob, genrateAccessToken } = require("../utils/Azur
 
 async function createProject(req, res, initRedisSubscribe) {
     try {
-        const { user_id, git_url, project_slug, frame_work, env, node_module_cmd, build_cmd, branch_name,build_foldername } = req.body;
+        const { user_id, clone_url, project_slug, frame_work, env, node_module_cmd, build_cmd, branch_name, build_foldername, repo_url } = req.body;
         
-        let response = await containerBuilderServerJob(git_url, project_slug, process.env.ACCESS_TOKEN, env, node_module_cmd, build_cmd, build_foldername);
+        let response = await containerBuilderServerJob(clone_url, project_slug, process.env.ACCESS_TOKEN, env, node_module_cmd, build_cmd, build_foldername);
 
         if (response?.message == "ExpiredAuthenticationToken") {
             const accessTokenResponse = await genrateAccessToken();
@@ -17,7 +17,7 @@ async function createProject(req, res, initRedisSubscribe) {
 
             NEW_ACCESS_TOKEN = accessTokenResponse.data.access_token;
 
-            response = await containerBuilderServerJob(git_url, project_slug, NEW_ACCESS_TOKEN, env, node_module_cmd, build_cmd, build_foldername);
+            response = await containerBuilderServerJob(clone_url, project_slug, NEW_ACCESS_TOKEN, env, node_module_cmd, build_cmd, build_foldername);
 
             if (response.status != 200) {
                 return res.status(400).json({ status: "error", errors: "error " });
@@ -27,7 +27,7 @@ async function createProject(req, res, initRedisSubscribe) {
         await initRedisSubscribe();
         let insertData = {
             project_slug: project_slug,
-            github_url: git_url,
+            clone_url: clone_url,
             host_url: `http://${project_slug}.localhost:8000`,
             azure_job_id: response?.data?.name,
             frame_work: frame_work,
@@ -35,6 +35,7 @@ async function createProject(req, res, initRedisSubscribe) {
             cmd: [node_module_cmd, build_cmd],
             user_id: user_id,
             default_branch: branch_name,
+            repo_url: repo_url
 
         };
 
