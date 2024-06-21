@@ -11,14 +11,19 @@ deployment :{
     service: container app job 
     name:builder-server-job
     Image:deploymentcr.azurecr.io/builder-server:latest
-    env:[AZURE_SUBSCRIPTION_ID,AZURE_TENANT_ID,ACCESS_TOKEN,AZURE_STORAGE_CONNECTION_STRING,REDIS_SERVICE_URI]
+    env:[PROJECT_ID = project_slug,
+ENV,
+BUILD_CMD,
+NODE_MODULE_CMD,
+AZURE_STORAGE_CONNECTION_STRING,
+REDIS_SERVICE_URI,
+GIT_REPOSITORY_URL,
+BUILD_FOLDER_NAME,
+]
 }
 
-these 4 env serve throught the api server to container :=
-PROJECT_ID == project_slug,
-AZURE_STORAGE_CONNECTION_STRING
-REDIS_SERVICE_URI
-GIT_REPOSITORY_URL
+
+
 
 api server  contain 4 env :
 deployment :{
@@ -36,7 +41,11 @@ deployment :{
     AZURE_STORAGE_CONNECTION_STRING,
     REDIS_SERVICE_URI,
     AZURE_CLIENT_ID,
-    AZURE_CLIENT_SECRET
+    AZURE_CLIENT_SECRET,
+    MONGOO_URI,
+    GIT_CLIENT_ID,
+    GIT_CLIENT_SECRET
+
     ]
 }
 

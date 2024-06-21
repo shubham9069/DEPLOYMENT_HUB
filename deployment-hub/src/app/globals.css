@@ -81,6 +81,10 @@
   input:focus{
     outline: none
   }
+  input:disabled{
+    color: rgb(180, 180, 180);
+    cursor: no-drop;
+  }
 
   
 
@@ -119,3 +123,12 @@ width: fit-content;
   font-weight: 500 !important;
   font-size: 13px;
 }
+
+::-webkit-scrollbar{
+  width: 5px;
+}
+::-webkit-scrollbar-thumb{
+  background-color: rgb(194, 194, 194);
+  border-radius: 20px;
+}
+

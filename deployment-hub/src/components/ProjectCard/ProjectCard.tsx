@@ -17,7 +17,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Ellipsis, GitBranchPlus, Github } from "lucide-react";
-const ProjectCard = () => {
+const ProjectCard = ({projectDetails}:any) => {
   return (
     <div className={`${style["product-card"]} border rounded-md`}>
       <div className={`flex gap-2 ${style["project-card-top"]}`}>
@@ -29,9 +29,9 @@ const ProjectCard = () => {
           className="object-contain"
         />
         <div className={style["text-content"]}>
-          <h4>Shadow-ci-ui-example</h4>
-          <Link href="" className="span-text">
-            Shadow-ci-ui-exampleShadow-ci-ui-example
+          <h4>{projectDetails?.project_slug}</h4>
+          <Link href="" target='_blank' className="span-text">
+            {projectDetails?.host_url}
           </Link>
         </div>
         <DropdownMenu>
@@ -50,17 +50,17 @@ const ProjectCard = () => {
       </div>
       <div className="flex gap-2 highlight-text items-center my-4">
         <Github className="w-4 h-4 fill-black" />
-        <Link href="" className="">
-          shubham9069/LLM_AI_DOCS4
+        <Link href={projectDetails?.github_url} target='_blank' className="">
+          {projectDetails?.github_url.substring(19,projectDetails?.github_url.length-4)}
         </Link>
       </div>
 
       <h4 className={`${style["create-project"]} text-zinc-500`}>
-        Created On 4 Oct
+        Created On {new Date(projectDetails?.created_at).toLocaleDateString()}
       </h4>
       <div className={`flex gap-2 items-center ${style["branch-name"]}`}>
         <GitBranchPlus className="icon-style" />
-        <p className="text-zinc-500">Master</p>
+        <p className="text-zinc-500">{projectDetails?.default_branch}</p>
       </div>
     </div>
   );

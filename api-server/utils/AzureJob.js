@@ -5,7 +5,7 @@ const RESOURCE_GROUPS = "Azure-machine1_group";
 const IMAGE_NAME = "deploymentcr.azurecr.io/builder-server:latest";
 const CONTAINER_NAME = "builder-server-container";
 
-async function containerBuilderServerJob(git_url, project_slug, ACCESS_TOKEN, env=[], node_module_cmd = "npm install --force", build_cmd = "npm run build") {
+async function containerBuilderServerJob(git_url, project_slug, ACCESS_TOKEN, env = [], node_module_cmd = "npm install --force", build_cmd = "npm run build", build_foldername="build") {
   try {
     const res = await axios.post(
       ` https://management.azure.com/subscriptions/${process.env.AZURE_SUBSCRIPTION_ID}/resourceGroups/${RESOURCE_GROUPS}/providers/Microsoft.App/jobs/${CONTAINER_JOB_NAME}/start?api-version=2023-05-01`,
@@ -18,6 +18,10 @@ async function containerBuilderServerJob(git_url, project_slug, ACCESS_TOKEN, en
               {
                 name: "NODE_MODULE_CMD",
                 value: node_module_cmd ,
+              },
+              {
+                name: "BUILD_FOLDER_NAME",
+                value: build_foldername,
               },
               {
                 name: "BUILD_CMD",
@@ -59,6 +63,7 @@ async function containerBuilderServerJob(git_url, project_slug, ACCESS_TOKEN, en
     );
     return res;
   } catch (err) {
+    console.error(err.response.data);
     if (err.response.data.error.code == "ExpiredAuthenticationToken")
       return { message: "ExpiredAuthenticationToken" };
     throw new Error(err);

@@ -1,6 +1,7 @@
-import React from 'react'
-import style from './CreateProject.module.css'
-import { ChevronDown, Github, Plus, Search } from 'lucide-react';
+"use client";
+import React, { useCallback, useContext, useEffect, useState } from "react";
+import style from "./CreateProject.module.css";
+import { ChevronDown, Github, Plus, Search } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,10 +16,83 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import Image from 'next/image';
-import { Button } from '../ui/button';
+import Image from "next/image";
+import { Button } from "../ui/button";
+import { getRepositories } from "@/service/Github.service";
+import { AppContext } from "@/context/AppProvider";
+import { useRouter } from "next/navigation";
+import { clone_template } from "@/DummyData";
 
 const CreateProject = () => {
+  const router = useRouter()
+   const { synchronizeSetLoaderState,userData }: any =useContext(AppContext);
+  const [allRepo, setAllRepo] = useState([]);
+  const [searchRepo,setSearchRepo] = useState([])
+
+  async function getRepo() {
+synchronizeSetLoaderState(true)
+    try {
+      const res = await getRepositories();
+      if (res?.data?.length) {
+        const repoData = res.data.map((data) => {
+          return {
+            repo_name: data.name,
+            clone_url: data.clone_url,
+            default_branch: data.default_branch,
+            language: data.language,
+            repo_url: data?.full_name,
+          };
+        });
+        setAllRepo(repoData);
+        setSearchRepo(repoData)
+      }
+    } catch (err) {
+      console.log(err);
+    }
+    finally{
+      synchronizeSetLoaderState(false)
+    }
+  }
+
+  function handleImport(project){
+    router.push("/configure-project?project="+JSON.stringify(project));
+
+  }
+
+  function searchRepofn(val){ 
+    if(!val){
+       setSearchRepo(allRepo)
+      return 
+    }
+    const arr = allRepo?.filter((repo)=>{
+      return repo.repo_name.includes(val);
+    })
+    
+    setSearchRepo(arr)
+
+  }
+  const debounce = (func)=>{
+    let timer;
+    return function (...args){
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(() => {
+        timer = null;
+        func.apply(this, args);
+      }, 500);
+    }
+
+  }
+
+
+  const optimizedFn = useCallback(debounce(searchRepofn), []);
+  
+
+  useEffect(() => {
+    if (!allRepo.length) {
+      getRepo();
+    }
+  }, []);
+
   return (
     <div className={style["create-project-container"]}>
       <p className="font-semibold text-4xl "> Let's build something new.</p>
@@ -36,21 +110,32 @@ const CreateProject = () => {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <div className="flex gap-2 items-center border rounded-md default-input">
-                    <Github className="mr-2 icon-style" />
-                    <p className="text-sm flex-1">Shubham9079</p>
+                    <Image
+                      src="/image/icon/github-icon.svg"
+                      width={16}
+                      height={16}
+                      alt="github"
+                    />
+                    <p className="text-sm flex-1 font-medium">
+                      {userData?.username}
+                    </p>
                     <ChevronDown className="w-4 h-4 " />
                   </div>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56">
-                  <DropdownMenuItem className="py-2">
-                    <Github className="mr-2 icon-style" />
-                    <span className="text-slate-600 text-sm">Profile</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="py-2">
-                    <Github className="mr-2 icon-style" />
-                    <span className="text-slate-600 text-sm">Logout</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
+                  <DropdownMenuLabel>
+                    <div className="flex gap-2 items-center border rounded-md default-input">
+                      <Image
+                        src="/image/icon/github-icon.svg"
+                        width={16}
+                        height={16}
+                        alt="github"
+                      />
+                      <p className="text-sm flex-1 font-medium">
+                        {allRepo?.length} Repository
+                      </p>
+                    </div>
+                  </DropdownMenuLabel>
                   <DropdownMenuItem className="py-2">
                     <Plus className="mr-2 icon-style" />
                     <span className="text-slate-600 text-sm">
@@ -63,15 +148,24 @@ const CreateProject = () => {
             <div className="w-2/4 max-sm:hidden">
               <div className=" flex-1 shadow-sm border flex-1 default-input flex gap-2 items-center">
                 <Search className="icon-style" />
-                <input className=" text-sm" placeholder="search project name" />
+                <input
+                  className=" text-sm"
+                  onChange={(e) => optimizedFn(e.target.value)}
+                  placeholder="search project name"
+                />
               </div>
             </div>
           </div>
           {/* repo container */}
-          <div className={`border rounded-md divide-y `}>
-            {[...Array(5)].map((elem) => {
+          <div
+            className={`border rounded-md divide-y max-h-80 overflow-y-auto `}
+          >
+            {searchRepo?.map((elem, i) => {
               return (
-                <div className="p-4 flex gap-2 items-center  ">
+                <div
+                  className="p-4 flex gap-2 items-center  "
+                  key={elem?.repo_name}
+                >
                   <Image
                     src="/image/logo.png"
                     alt="git logo "
@@ -80,12 +174,14 @@ const CreateProject = () => {
                     className="object-contain"
                   />
                   <p className="flex-1 text-sm font-medium">
-                    art gallery{" "}
+                    {elem?.repo_name}
                     <span className="text-zinc-500 text-xs font-normal">
-                      · 4d ago{" "}
+                      · {elem?.default_branch}
                     </span>
                   </p>
-                  <Button className="h-8">import</Button>
+                  <Button className="h-8" onClick={() => handleImport(elem)}>
+                    Import
+                  </Button>
                 </div>
               );
             })}
@@ -100,11 +196,15 @@ const CreateProject = () => {
         <div className="p-4 flex-1 border rounded-md shadow-2xl">
           <p className="font-semibold text-xl ">Clone Template</p>
           <div className="grid grid-cols-2 gap-3 my-4 w-fit mx-auto">
-            {[...Array(4)]?.map((item) => {
+            {clone_template?.map((item, i) => {
               return (
-                <div className="rounded-ml shadow-lg  max-w-44">
+                <div
+                  className="rounded-ml shadow-lg  max-w-44 cursor-pointer"
+                  key={i}
+                  onClick={() => handleImport(item)}
+                >
                   <Image
-                    src="/image/nextjs.avif"
+                    src={item.img}
                     alt="template"
                     width={300}
                     height={150}
@@ -113,12 +213,12 @@ const CreateProject = () => {
 
                   <div className="flex gap-3 p-2 ">
                     <Image
-                      src="/image/icon/next-icon.svg"
+                      src={item?.icon}
                       alt="template"
                       width={20}
                       height={19}
                     />
-                    <p className="text-sm font-medium "> Next.js</p>
+                    <p className="text-sm font-medium "> {item?.repo_name}</p>
                   </div>
                 </div>
               );
@@ -126,8 +226,9 @@ const CreateProject = () => {
           </div>
         </div>
       </div>
+
     </div>
   );
-}
+};
 
-export default CreateProject
+export default CreateProject;

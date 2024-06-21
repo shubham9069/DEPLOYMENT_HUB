@@ -5,8 +5,13 @@ const schema = new mongoose.Schema({
     project_slug: {
         required: true,
         type: String,
+        unique: true,
     },
     github_url: {
+        required: true,
+        type: String,
+    },
+    default_branch: {
         required: true,
         type: String,
     },
@@ -31,7 +36,7 @@ const schema = new mongoose.Schema({
     
 
 
-})
+}, { timestamps: true })
 
 const projectCollection = mongoose.model('project', schema)
 
