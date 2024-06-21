@@ -6,20 +6,14 @@ RUN apt-get install -y curl
 RUN curl -sL https://deb.nodesource.com/setup_20.x | bash -
 RUN apt-get upgrade -y
 RUN apt-get install -y nodejs
-
 RUN apt-get install git -y
+RUN npm install -g @angular/cli
 
 RUN mkdir -p home/app/output
 
-COPY main.sh /home/app/main.sh
 COPY script.js /home/app/script.js
 COPY package*.json /home/app
 
 RUN cd /home/app && npm install
 
-# change this from CRLF to lf
-RUN sed -i 's/\r$//' /home/app/main.sh && chmod +x /home/app/main.sh  
-RUN chmod +x /home/app/script.js
-
-
-ENTRYPOINT [ "/home/app/main.sh" ]
+ENTRYPOINT [ "node","/home/app/script.js" ]

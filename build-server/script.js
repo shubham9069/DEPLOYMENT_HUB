@@ -18,8 +18,7 @@ function publishLog(log) {
 
 function connect() {
   try {
-    const AZURE_STORAGE_CONNECTION_STRING =
-      process.env.AZURE_STORAGE_CONNECTION_STRING;
+    const AZURE_STORAGE_CONNECTION_STRING =process.env.AZURE_STORAGE_CONNECTION_STRING;
 
     if (!AZURE_STORAGE_CONNECTION_STRING) {
       throw Error("Azure Storage Connection string not found");
@@ -76,7 +75,7 @@ async function init() {
   const outDirPath = path.join(__dirname, "output"); // path of project inside container - home/app/output
   console.log(outDirPath);
 
-  const p = exec(` cd ${outDirPath} && ${process.env.NODE_MODULE_CMD} && ${process.env.BUILD_CMD} `); // Terminal CMD
+  const p = exec(`git clone ${process.env.GIT_REPOSITORY_URL} ${outDirPath} && cd ${outDirPath} && ${process.env.NODE_MODULE_CMD} && ${process.env.BUILD_CMD} `); // Terminal CMD
 
   p.stdout.on("data", function (data) {
     console.log(data.toString());
