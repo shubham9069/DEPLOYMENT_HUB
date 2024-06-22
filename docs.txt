@@ -4,9 +4,7 @@ job in contaiuner app :- https://learn.microsoft.com/en-us/azure/container-apps/
 oauth2 access token :- https://learn.microsoft.com/en-us/entra/identity-platform/v2-oauth2-client-creds-grant-flow#get-a-token
 exectution container job API :- https://learn.microsoft.com/en-us/rest/api/containerapps/jobs/start?view=rest-containerapps-2024-03-01&tabs=HTTP
 
-
-
-builder-server contain 4 env : 
+builder-server :- 
 deployment :{
     service: container app job 
     name:builder-server-job
@@ -25,7 +23,7 @@ BUILD_FOLDER_NAME,
 
 
 
-api server  contain 4 env :
+api server :-
 deployment :{
     service: container instance 
     name:api-server-container
@@ -49,7 +47,7 @@ deployment :{
     ]
 }
 
-api server  contain 4 env :
+proxy server :-
 deployment :{
     service: container instance 
     name:reverse-proxy-container
