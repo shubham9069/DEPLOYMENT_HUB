@@ -28,7 +28,10 @@ import { io } from "socket.io-client";
 import LogTerminal from "./LogTerminal";
 import Link from "next/link";
 
-const socket = io("http://localhost:9002", {});
+const socket = io(
+  "http://deploymenthub.australiacentral.azurecontainer.io:9002",
+  {}
+);
 
 const ConfigureProject = () => {
   const { toast } = useToast();
