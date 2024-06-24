@@ -114,7 +114,7 @@ const ConfigureProject = () => {
   async function projectConfig() {
     let payload = {
       user_id: userData?._id,
-      project_slug: projectDetails?.project_slug.trim().replaceAll(" ", "-"),
+      project_slug: projectDetails?.project_slug,
       clone_url: projectDetails?.clone_url,
       env: environmentVariables[0].name ? environmentVariables : [],
       branch_name: projectDetails?.default_branch,
@@ -295,7 +295,7 @@ const ConfigureProject = () => {
                 onChange={(e) =>
                   setProjectDetails({
                     ...projectDetails,
-                    [e.target.name]: e.target.value,
+                    [e.target.name]: e.target.value?.trim()?.replaceAll(" ","-"),
                   })
                 }
                 className="default-input border text-sm w-full"

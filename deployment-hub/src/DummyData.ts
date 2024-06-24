@@ -1,6 +1,6 @@
 export const clone_template = [
   {
-    repo_name: "textutils ",
+    repo_name: "textutils",
     clone_url: "https://github.com/shubham9069/textutiles.git",
     default_branch: "master",
     language: "javascript",
