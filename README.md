@@ -6,7 +6,17 @@ Developing a new project similar to Vercel that enables one-click deployment of 
 - Node.JS
 - Redis
 - Docker:
-- AZURE ACR,ACI,ACA,BLOB STORAGE
+- AZURE ACR,ACI,ACA,BLOB STORAGE,
+-   AZURE_SUBSCRIPTION_ID,
+    AZURE_TENANT_ID,
+    ACCESS_TOKEN,(microsoft)
+    AZURE_STORAGE_CONNECTION_STRING,
+    REDIS_SERVICE_URI,
+    AZURE_CLIENT_ID,
+    AZURE_CLIENT_SECRET,
+    MONGOO_URI,
+    GIT_CLIENT_ID,(github oAuth 2.0)
+    GIT_CLIENT_SECRET (github oAuth 2.0)
 
 
   ## Working Architecture:-
