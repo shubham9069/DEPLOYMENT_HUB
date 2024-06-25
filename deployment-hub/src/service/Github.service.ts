@@ -3,10 +3,10 @@ import { http } from "./Http";
 
 export async function getRepositories() {
   try {
-    const res = await http.get("https://api.github.com/user/repos", {
+    const res = await http.get("https://api.github.com/user/repos?sort=updated", {
       headers: {
         Accept: "application/vnd.github+json",
-        Authorization:`Bearer ${localStorage.getItem('access_token')} `,
+        Authorization: `Bearer ${localStorage.getItem("access_token")} `,
       },
     });
     return res;

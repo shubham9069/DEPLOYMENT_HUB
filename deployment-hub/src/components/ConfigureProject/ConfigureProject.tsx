@@ -112,9 +112,13 @@ const ConfigureProject = () => {
   }
 
   async function projectConfig() {
+    if (!projectDetails?.frame_work){
+      alert("select framework")
+      return 
+    }
     let payload = {
       user_id: userData?._id,
-      project_slug: projectDetails?.project_slug,
+      project_slug: projectDetails?.project_slug?.toLowerCase().trim()?.replaceAll(" ","-"),
       clone_url: projectDetails?.clone_url,
       env: environmentVariables[0].name ? environmentVariables : [],
       branch_name: projectDetails?.default_branch,
@@ -126,13 +130,16 @@ const ConfigureProject = () => {
     };
 
     try {
-      socket.emit("subscribe", `logs:${projectDetails?.project_slug}`);
-     
+      
       const res = await CreateProject(payload);
 
       if (res.data.data.azure_job_id) {
         setProjectState("deploy")
         setAllProject((prev)=>[...prev,res.data.data])
+        socket.emit(
+          "subscribe",
+          `logs:${res.data.data.project_slug}`
+        );
         toast({
           title: `Creating project`,
           description: `Your project job-id:- ${res.data.data.azure_job_id}`,
@@ -142,6 +149,7 @@ const ConfigureProject = () => {
         });
       }
     } catch (err) {
+      
       console.log(err);
     }
   }
@@ -165,9 +173,17 @@ const ConfigureProject = () => {
   useEffect(() => {
     // event listen
     socket.on("message", (logs) => {
-      console.log(logs);
+      console.log(logs)
       setLogArray((prev=>[...prev,JSON.parse(logs)]))
+      
+      setTimeout(()=>{
+        let elem = document.getElementById("log-container");
+        if (elem){
+        elem.scrollTop =elem.scrollHeight
+        }
+      },50)
   })
+
   }, []);
 
  
@@ -295,7 +311,7 @@ const ConfigureProject = () => {
                 onChange={(e) =>
                   setProjectDetails({
                     ...projectDetails,
-                    [e.target.name]: e.target.value?.trim()?.replaceAll(" ","-"),
+                    [e.target.name]: e.target.value,
                   })
                 }
                 className="default-input border text-sm w-full"
@@ -475,13 +491,16 @@ const ConfigureProject = () => {
             </Button>
           </div>
 
-          {stateClass["step2"] && (
+        
+            <div className={stateClass["step2"] ? "block":"hidden"}>
             <LogTerminal
+              project_slug={projectDetails?.project_slug?.toLowerCase().trim()?.replaceAll(" ","-")}
               logArray={logArray}
               projectState={projectState}
               setProjectState={setProjectState}
             />
-          )}
+            </div>
+        
         </div>
       </div>
     </div>

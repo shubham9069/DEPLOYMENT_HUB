@@ -9,6 +9,7 @@ export async function CreateProject(payload:any) {
     });
     return res;
   } catch (e) {
+    alert(e.message);
     console.log(e);
   }
 }
