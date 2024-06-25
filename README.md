@@ -50,3 +50,8 @@ At this point following services would be up and running:
 | 3    | `s3-reverse-proxy` | `:8000` |
 
 ### Demo
+
+
+
+https://github.com/shubham9069/DEPLOYMENT_HUB/assets/101730475/74ebd62e-b4aa-4fd7-996a-dc76220740c0
+
