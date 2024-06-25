@@ -8,6 +8,7 @@ Developing a new project similar to Vercel that enables one-click deployment of 
 - Docker:
 - AZURE ACR,ACI,ACA,BLOB STORAGE
 
+
   ## Working Architecture:-
 ![Working-flow-architecture](https://github.com/shubham9069/DEPLOYMENT_HUB/assets/101730475/48bac3d1-4fe3-4757-9a65-0a1b87bb2763)
 
@@ -34,7 +35,7 @@ At this point following services would be up and running:
 
 | S.No | Service            | PORT    |
 | ---- | ------------------ | ------- |
-| 1    | `api-server`       | `:9000` |
+| 1    | `api-server`       | `:80` |
 | 2    | `socket.io-server` | `:9002` |
 | 3    | `s3-reverse-proxy` | `:8000` |
 
