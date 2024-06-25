@@ -67,6 +67,7 @@ export const AppProvider = ({ children }: any) => {
         synchronizeSetLoaderState,
         setAllProject,
         AllProject,
+        getProject,
       }}
     >
       {children}

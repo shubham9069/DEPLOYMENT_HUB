@@ -11,7 +11,8 @@ import React, { useContext, useEffect } from "react";
 const Login = () => {
   const {toast }= useToast()
   const {
-
+    
+getProject,
     setToken,
     setUserData,
     synchronizeSetLoaderState,
@@ -38,12 +39,14 @@ const Login = () => {
            <ToastAction altText="Goto schedule to undo">Undo</ToastAction>
          ),
        });
+       getProject(res.data.data._id);
       localStorage.setItem("access_token", res.data.access_token);
       localStorage.setItem("user_data", JSON.stringify(res.data.data));
       setToken(res.data.access_token);
       setUserData(res.data.data);
       router.push(`/${res.data.data.username}`);
       synchronizeSetLoaderState(false);
+      
     }
   }
 

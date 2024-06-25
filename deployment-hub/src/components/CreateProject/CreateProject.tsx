@@ -95,7 +95,7 @@ synchronizeSetLoaderState(true)
 
   return (
     <div className={style["create-project-container"]}>
-      <p className="font-semibold text-4xl "> Let's build something new.</p>
+      <p className="font-semibold text-4xl "> {"Let's build something new."}</p>
       <span className="text-sm font-medium text-zinc-500 ">
         To deploy a new Project, import an existing Git Repository or get
         started with one of our Templates.

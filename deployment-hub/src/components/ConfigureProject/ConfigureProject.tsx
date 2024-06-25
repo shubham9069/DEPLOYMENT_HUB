@@ -29,7 +29,7 @@ import LogTerminal from "./LogTerminal";
 import Link from "next/link";
 
 const socket = io(
-  "http://deploymenthub.australiacentral.azurecontainer.io:9002",
+  "http://localhost:9002",
   {}
 );
 
@@ -197,7 +197,7 @@ const ConfigureProject = () => {
         <ArrowLeft className="icon-style" />
         <span className="text-slate-500 text-sm">Back</span>
       </div>
-      <p className="font-semibold text-4xl ">You're almost done.</p>
+      <p className="font-semibold text-4xl ">{"You're almost done."}</p>
       <span className="text-sm font-medium text-zinc-500 ">
         Please follow the steps to configure your Project and deploy it.
       </span>
@@ -436,7 +436,7 @@ const ConfigureProject = () => {
                   <AccordionContent>
                     {environmentVariables?.map((obj, i) => {
                       return (
-                        <div className="flex gap-2 my-4">
+                        <div className="flex gap-2 my-4" key={i}>
                           <div className="inputgroup flex-1 ">
                             <label className="text-xs font-medium text-zinc-700 block mb-1">
                               key
