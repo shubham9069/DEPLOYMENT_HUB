@@ -17,7 +17,11 @@ Developing a new project similar to Vercel that enables one-click deployment of 
     MONGOO_URI,
     GIT_CLIENT_ID,(github oAuth 2.0)
     GIT_CLIENT_SECRET (github oAuth 2.0)
+### Demo
 
+
+
+https://github.com/shubham9069/DEPLOYMENT_HUB/assets/101730475/74ebd62e-b4aa-4fd7-996a-dc76220740c0
 
   ## Working Architecture:-
 ![Working-flow-architecture](https://github.com/shubham9069/DEPLOYMENT_HUB/assets/101730475/48bac3d1-4fe3-4757-9a65-0a1b87bb2763)
@@ -49,9 +53,4 @@ At this point following services would be up and running:
 | 2    | `socket.io-server` | `:9002` |
 | 3    | `s3-reverse-proxy` | `:8000` |
 
-### Demo
-
-
-
-https://github.com/shubham9069/DEPLOYMENT_HUB/assets/101730475/74ebd62e-b4aa-4fd7-996a-dc76220740c0
 
